@@ -79,4 +79,3 @@ namespace test_app_src
     }
     #endregion
 }
-}
