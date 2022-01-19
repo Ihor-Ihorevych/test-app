@@ -44,8 +44,11 @@ namespace test_app_src
                 // Splitting pages into individual files
                 for(int i = 0; i < _wordDoc.PageCount; i++)
                 {
-                    var page = _wordDoc.ExtractPages(i, 1);
-                    page.Save($"{_tempPath}/{i}.docx");
+                    await Task.Run(() => {
+                        var page = _wordDoc.ExtractPages(i, 1);
+                        page.Save($"{_tempPath}/{i}.docx");
+                    });
+                    
                 }
                 // Initializing new document
                 _wordDocument = new WordDocument();
@@ -63,12 +66,10 @@ namespace test_app_src
                         _wordDocument.Sections.Add(clone);
                     }
                 }
-                // Ain't working :(
-                _wordDocument.Watermark = null;
-                _wordDocument.LastSection.HeadersFooters.LinkToPrevious = false;
                 System.IO.Directory.Delete(_tempPath, true);
                 foreach (WSection section in _wordDocument.Sections)
                 {
+                    section.HeadersFooters.LinkToPrevious = false;
                     // Add some gap between bottom and qr code
                     section.PageSetup.FooterDistance = 1;
                     section.PageSetup.DifferentFirstPage = false;
@@ -83,8 +84,8 @@ namespace test_app_src
                     Bitmap qrCodeImage = qrCode.GetGraphic(100);
                     // Setting image to qr code
                     qr.LoadImage(qrCodeImage);
-                    qr.Height = 75;
-                    qr.Width = 75;
+                    qr.Height = 70;
+                    qr.Width = 70;
                     // Adding it to footer
                     section.HeadersFooters.Footer.AddParagraph().ChildEntities.Add(qr);
                 }
