@@ -2,6 +2,7 @@
 using Syncfusion.DocIO.DLS;
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace test_app_src
 {
@@ -12,12 +13,16 @@ namespace test_app_src
     {
         #region Private fields
         private WordDocument _wordDocument;
+        private Aspose.Words.Document _wordDoc;
         private string _filePath;
+        private string _userInfo;
+        private string _tempPath;
         #endregion
         #region Constructor
-        public WordHelper(string filePath)
+        public WordHelper(string filePath, string userInfo)
         {
             _filePath = filePath;
+            _userInfo = userInfo;
         }
         #endregion
         #region Methods
@@ -26,26 +31,53 @@ namespace test_app_src
         /// </summary>
         /// <returns>Boolean (is file iterated successfully, or not)</returns>
         /// <exception cref="ArgumentException"></exception>
-        public bool AddQrCodes()
+        public async Task<bool> AddQrCodes()
         {
             if (_filePath == string.Empty)
                 throw new ArgumentException("Path to .docx file can't be empty");
             try
             {
-                _wordDocument = new WordDocument(_filePath);
-                int current_page = 0;
-                int pages_count = _wordDocument.BuiltinDocumentProperties.PageCount;
+                // Reading doc file
+                _wordDoc = new Aspose.Words.Document(_filePath);
+                _tempPath = $"tmp{Guid.NewGuid()}";
+                int total_pages = _wordDoc.PageCount;
+                // Splitting pages into individual files
+                for(int i = 0; i < _wordDoc.PageCount; i++)
+                {
+                    var page = _wordDoc.ExtractPages(i, 1);
+                    page.Save($"{_tempPath}/{i}.docx");
+                }
+                // Initializing new document
+                _wordDocument = new WordDocument();
                 QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                int current_page = 0;
+                string ev_text = "Evaluation Only. Created with Aspose.Words. Copyright 2003-2022 Aspose Pty Ltd.";
+                for (int i = 0; i < total_pages; i++)
+                {
+                    WordDocument tmp = new WordDocument($"{_tempPath}/{i}.docx");
+                    // Replacing some bs
+                    tmp.Replace(ev_text, "", true, true);
+                    foreach(WSection section in tmp.Sections)
+                    {
+                        var clone = section.Clone();
+                        _wordDocument.Sections.Add(clone);
+                    }
+                }
+                // Ain't working :(
+                _wordDocument.Watermark = null;
                 _wordDocument.LastSection.HeadersFooters.LinkToPrevious = false;
-                string userName = Environment.UserName;
+                System.IO.Directory.Delete(_tempPath, true);
                 foreach (WSection section in _wordDocument.Sections)
                 {
+                    // Add some gap between bottom and qr code
+                    section.PageSetup.FooterDistance = 1;
+                    section.PageSetup.DifferentFirstPage = false;
                     // Removing existing footers, if they existing
                     section.HeadersFooters.Footer.ChildEntities.Clear();
                     // Creating new picture for word
                     WPicture qr = new WPicture(_wordDocument);
                     // And generating qr code, using some word file data
-                    QRCodeData qrCodeData = qrGenerator.CreateQrCode($"{userName}, {++current_page} - {pages_count}", QRCodeGenerator.ECCLevel.Q);
+                    QRCodeData qrCodeData = qrGenerator.CreateQrCode($"{_userInfo}, {++current_page} - {total_pages}", QRCodeGenerator.ECCLevel.Q);
                     QRCode qrCode = new QRCode(qrCodeData);
                     // Getting image
                     Bitmap qrCodeImage = qrCode.GetGraphic(100);
@@ -58,8 +90,9 @@ namespace test_app_src
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                System.Windows.MessageBox.Show(ex.Message);
                 return false;
             }
         }

@@ -16,7 +16,7 @@
                     <Setter Property="Margin" Value="5"/>
                 </Style>
             </StackPanel.Resources>
-            <TextBox Text="Some text" />
+            <TextBox x:Name="userInfoTextBox" Text="Some text" />
             <Button Click="Open_File_Button_Handler" Content="Choose file"/>
             <Button Click="Start_Button_Handler" Content="Start"/>
         </StackPanel>

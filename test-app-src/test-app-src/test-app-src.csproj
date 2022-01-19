@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Words" Version="22.1.0" />
     <PackageReference Include="QRCoder" Version="1.4.3" />
     <PackageReference Include="Syncfusion.DocIO.Wpf" Version="19.4.0.43" />
   </ItemGroup>

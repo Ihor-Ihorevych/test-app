@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace test_app_src
 {
@@ -48,17 +49,19 @@ namespace test_app_src
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Start_Button_Handler(object sender, EventArgs e)
+        private async void Start_Button_Handler(object sender, EventArgs e)
         {
+            Button button = sender as Button;
+            
             if (_docxFilePath == string.Empty)
             {
                 MessageBox.Show("Choose the file");
                 return;
             }
-
+            button.IsEnabled = false;
             // Creating new helper class, which allows us to make changes in file
-            WordHelper helper = new WordHelper(_docxFilePath);
-            if (helper.AddQrCodes())
+            WordHelper helper = new WordHelper(_docxFilePath, userInfoTextBox.Text);
+            if (await helper.AddQrCodes())
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog()
                 {
@@ -77,6 +80,7 @@ namespace test_app_src
             {
                 MessageBox.Show("Error occured while working with file (probably, no content)");
             }
+            button.IsEnabled = true;
         }
     }
     #endregion
