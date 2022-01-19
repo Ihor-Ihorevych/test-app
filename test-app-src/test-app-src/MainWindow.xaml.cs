@@ -64,21 +64,18 @@ namespace test_app_src
                     {
                         Filter = "Microsoft word file (*.docx,*.doc)|*.docx;*.doc"
                     };
-                    if (saveFileDialog.ShowDialog() == true)
+                    if (saveFileDialog.ShowDialog() == true && helper.Save(saveFileDialog.FileName))
                     {
-                        if (helper.Save(saveFileDialog.FileName))
-                        {
-                            MessageBox.Show("File saved successfully!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Error while saving the file");
-                        }
+                        MessageBox.Show("File saved successfully!");
                     }
                     else
                     {
                         MessageBox.Show("Error while saving the file");
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Error occured while working with file");
                 }
             }
             catch (Exception ex)
