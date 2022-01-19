@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "o5gGeIkD6viOT2fHfrcNugcJFHIa9R4j+eu/dSKO5YPayjT8ul+HDUNTHbNWe/SDo4AmGvhq+8bYxr1bncLHbg==",
+  "dgSpecHash": "UmzdsjpCchzF0dUeH0cgX1Pu1Z+gHePy79PHTo8qWTT0xMdDm8BGo4Mkc6K02LcjMhaem23G/iCK2Z8hV/FSIg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\volos\\Desktop\\test-app-src\\test-app-src\\test-app-src.csproj",
+  "projectFilePath": "C:\\Users\\volos\\Desktop\\test-app\\test-app-src\\test-app-src\\test-app-src.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\volos\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\volos\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",

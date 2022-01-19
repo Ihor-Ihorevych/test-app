@@ -1,10 +1,5 @@
 ﻿using Microsoft.Win32;
-using QRCoder;
-using Syncfusion.DocIO;
-using Syncfusion.DocIO.DLS;
 using System;
-using System.Drawing;
-using System.IO;
 using System.Windows;
 
 namespace test_app_src

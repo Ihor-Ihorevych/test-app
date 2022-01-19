@@ -351,11 +351,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\volos\\Desktop\\test-app-src\\test-app-src\\test-app-src.csproj",
+      "projectUniqueName": "C:\\Users\\volos\\Desktop\\test-app\\test-app-src\\test-app-src\\test-app-src.csproj",
       "projectName": "test-app-src",
-      "projectPath": "C:\\Users\\volos\\Desktop\\test-app-src\\test-app-src\\test-app-src.csproj",
+      "projectPath": "C:\\Users\\volos\\Desktop\\test-app\\test-app-src\\test-app-src\\test-app-src.csproj",
       "packagesPath": "C:\\Users\\volos\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\volos\\Desktop\\test-app-src\\test-app-src\\obj\\",
+      "outputPath": "C:\\Users\\volos\\Desktop\\test-app\\test-app-src\\test-app-src\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
