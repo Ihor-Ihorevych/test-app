@@ -42,7 +42,7 @@ namespace test_app_src
                 _tempPath = $"tmp{Guid.NewGuid()}";
                 int total_pages = _wordDoc.PageCount;
                 // Splitting pages into individual files
-                for(int i = 0; i < _wordDoc.PageCount; i++)
+                for(int i = 0; i < total_pages; i++)
                 {
                     await Task.Run(() => {
                         var page = _wordDoc.ExtractPages(i, 1);
@@ -52,6 +52,7 @@ namespace test_app_src
                 }
                 // Initializing new document
                 _wordDocument = new WordDocument();
+                _wordDocument.MailMerge.RemoveEmptyParagraphs = true;
                 QRCodeGenerator qrGenerator = new QRCodeGenerator();
                 int current_page = 0;
                 string ev_text = "Evaluation Only. Created with Aspose.Words. Copyright 2003-2022 Aspose Pty Ltd.";
@@ -59,10 +60,22 @@ namespace test_app_src
                 {
                     WordDocument tmp = new WordDocument($"{_tempPath}/{i}.docx");
                     // Replacing some bs
-                    tmp.Replace(ev_text, "", true, true);
-                    foreach(WSection section in tmp.Sections)
+                    
+                    string replaceWith = "";
+                    tmp.MailMerge.RemoveEmptyParagraphs = true;
+                    tmp.Replace(ev_text, replaceWith, false, true);
+                    foreach (WSection section in tmp.Sections)
                     {
                         var clone = section.Clone();
+                        foreach(WParagraph w in clone.Paragraphs)
+                        {
+                            w.ParagraphFormat.LineSpacing = 10f;
+                            if (w.Text == string.Empty)
+                            {
+                                var index = clone.Paragraphs.IndexOf(w);
+                                clone.Paragraphs.RemoveAt(index);
+                            }
+                        }
                         _wordDocument.Sections.Add(clone);
                     }
                 }
