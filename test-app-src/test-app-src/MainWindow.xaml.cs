@@ -50,39 +50,33 @@ namespace test_app_src
         /// <param name="e"></param>
         private void Start_Button_Handler(object sender, EventArgs e)
         {
-            try
+            if (_docxFilePath == string.Empty)
             {
-                if (_docxFilePath == string.Empty)
+                MessageBox.Show("Choose the file");
+                return;
+            }
+            WordHelper helper = new WordHelper(_docxFilePath);
+            if (helper.AddQrCodes())
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog()
                 {
-                    MessageBox.Show("Choose the file");
-                    return;
-                }
-                WordHelper helper = new WordHelper(_docxFilePath);
-                if (helper.AddQrCodes())
+                    Filter = "Microsoft word file (*.docx,*.doc)|*.docx;*.doc"
+                };
+                if (saveFileDialog.ShowDialog() == true && helper.Save(saveFileDialog.FileName))
                 {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog()
-                    {
-                        Filter = "Microsoft word file (*.docx,*.doc)|*.docx;*.doc"
-                    };
-                    if (saveFileDialog.ShowDialog() == true && helper.Save(saveFileDialog.FileName))
-                    {
-                        MessageBox.Show("File saved successfully!");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error while saving the file");
-                    }
+                    MessageBox.Show("File saved successfully!");
                 }
                 else
                 {
-                    MessageBox.Show("Error occured while working with file");
+                    MessageBox.Show("Error while saving the file");
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error occured while working with file");
             }
         }
-        #endregion
     }
+    #endregion
+}
 }
