@@ -55,6 +55,8 @@ namespace test_app_src
                 MessageBox.Show("Choose the file");
                 return;
             }
+
+            // Creating new helper class, which allows us to make changes in file
             WordHelper helper = new WordHelper(_docxFilePath);
             if (helper.AddQrCodes())
             {
@@ -73,7 +75,7 @@ namespace test_app_src
             }
             else
             {
-                MessageBox.Show("Error occured while working with file");
+                MessageBox.Show("Error occured while working with file (probably, no content)");
             }
         }
     }
